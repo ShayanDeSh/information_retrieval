@@ -5,4 +5,5 @@ export VIRTUAL_ENV := $(shell pwd)/venv
 .PHONY: test
 
 test:
-	pytest 
+	pytest -rP
+
