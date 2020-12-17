@@ -1,10 +1,8 @@
 from string import punctuation
 from typing import List, Tuple
 from .helper import timer, verbal, nonverbal
+from .globals import inverted_index
 import pdb
-
-
-inverted_index = {}
 
 
 def create_index(doc_name: str, text: str):

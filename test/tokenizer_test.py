@@ -1,5 +1,6 @@
 import pytest
 from ir.tokenizer import *
+from ir.query import *
 import ujson
 
 
@@ -59,3 +60,10 @@ def test_create_index(docs):
     with open('index.json', "w") as json_file:
         ujson.dump(inverted_index, json_file, indent=4, ensure_ascii=False)
     assert False
+
+
+def test_one_word_query():
+    r = one_word_query('آزاد')
+    assert r == {'2.txt': [41]}
+
+
