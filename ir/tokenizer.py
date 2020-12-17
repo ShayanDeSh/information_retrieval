@@ -2,7 +2,6 @@ from string import punctuation
 from typing import List, Tuple
 from .helper import timer, verbal, nonverbal
 from .globals import inverted_index
-import pdb
 
 
 def create_index(doc_name: str, text: str):
@@ -27,6 +26,7 @@ def tokenize(text: str) -> List[str]:
     tokens = remove_nonverbal(tokens)
     tokens = [remove_verb_prefix_postfix(token) for token in tokens]
     tokens = remove_verbal(tokens)
+    tokens = [remove_noun_postfix(token) for token in tokens]
     tokens = positioner(tokens)
     tokens = sort_tuples(tokens)
     tokens = merge_duplicates(tokens)
@@ -63,7 +63,7 @@ def remove_verbal(tokens: List[str]) -> List[str]:
 
 def remove_verb_prefix_postfix(verb: str):
     _verb = remove_verb_prefix(verb)
-    _verb = remove_verb_postfix(verb)
+    _verb = remove_verb_postfix(_verb)
     if _verb in verbal:
         return _verb
     return verb
@@ -91,6 +91,26 @@ def remove_verb_postfix(verb: str) -> str:
     elif verb.endswith("د"):
         verb = verb[0:-1]
     return verb
+
+
+def remove_noun_postfix(noun: str) -> str:
+    _noun = remove_noun_relative_postfix(noun)
+    _noun = remove_noun_comparative_postfix(_noun)
+    return _noun
+
+
+def remove_noun_relative_postfix(noun: str) -> str:
+    if noun.endswith("ی"):
+        noun = noun[0:-1]
+    return noun
+
+
+def remove_noun_comparative_postfix(noun: str) -> str:
+    if noun.endswith("تر"):
+        noun = noun[0:-2]
+    elif noun.endswith("ترین"):
+        noun = noun[0:-4]
+    return noun
 
 
 def positioner(tokens: List[str]) -> List[Tuple[str, ...]]:

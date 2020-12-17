@@ -1,13 +1,12 @@
 import pytest
 from ir.tokenizer import *
-from ir.query import *
 import ujson
+from ir.query import *
 
 
 @pytest.fixture
 def docs():
     from os import listdir
-
     docs = []
     for doc in listdir('./test/sampleDoc'):
         with open("./test/sampleDoc/{}".format(doc)) as doc_file:
@@ -50,8 +49,6 @@ def test_merge_duplicates():
 
 def test_tokenize(docs):
     result = tokenize(docs[0][1])
-    #for i in result:
-    #    print(i)
 
 
 def test_create_index(docs):
@@ -60,10 +57,5 @@ def test_create_index(docs):
     with open('index.json', "w") as json_file:
         ujson.dump(inverted_index, json_file, indent=4, ensure_ascii=False)
     assert False
-
-
-def test_one_word_query():
-    r = one_word_query('آزاد')
-    assert r == {'2.txt': [41]}
 
 
