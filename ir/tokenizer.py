@@ -1,6 +1,7 @@
 from string import punctuation
 from typing import List, Tuple
 from .helper import timer, verbal, nonverbal
+import pdb
 
 
 inverted_index = {}
@@ -22,9 +23,11 @@ def create_index(doc_name: str, text: str):
 
 def tokenize(text: str) -> List[str]:
     text = punctuation_remover(text)
-    text = number_remover(text)
+    text = persian_number_remover(text)
+    text = english_number_remover(text)
     tokens = text.split()
     tokens = remove_nonverbal(tokens)
+    tokens = [remove_verb_prefix_postfix(token) for token in tokens]
     tokens = remove_verbal(tokens)
     tokens = positioner(tokens)
     tokens = sort_tuples(tokens)
@@ -38,10 +41,17 @@ def punctuation_remover(text: str) -> str:
     return text
 
 
-def number_remover(text: str) -> str:
-    numbers = '۱۲۳۴۵۶۷۸۹١'
+def persian_number_remover(text: str) -> str:
+    numbers = '۰۱۲۳۴۵۶۷۸۹١'
     text = text.translate(str.maketrans('', '', numbers))
     return text
+
+
+def english_number_remover(text: str) -> str:
+    numbers = '1234567890'
+    text = text.translate(str.maketrans('', '', numbers))
+    return text
+
 
 def remove_nonverbal(tokens: List[str]) -> List[str]:
     r = [token for token in tokens if token not in nonverbal]
@@ -58,6 +68,7 @@ def remove_verb_prefix_postfix(verb: str):
     _verb = remove_verb_postfix(verb)
     if _verb in verbal:
         return _verb
+    return verb
 
 
 def remove_verb_prefix(verb: str) -> str:

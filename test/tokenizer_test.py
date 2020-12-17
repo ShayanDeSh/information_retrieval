@@ -21,10 +21,15 @@ def test_punctuation_remover():
     assert result == ''
 
 
-def test_number_remover():
-    result = number_remover('۱۲۳۴۵۶۷۸۹')
+def test_persian_number_remover():
+    result = persian_number_remover('۱۲۳۴۵۶۷۸۹')
     assert result == ''
     
+
+def test_persian_number_remover():
+    result = english_number_remover('1234567890')
+    assert result == ''
+
 
 def test_positioner():
     result = positioner(['a', 'b', 'c'])
