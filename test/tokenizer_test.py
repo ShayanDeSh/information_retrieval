@@ -56,6 +56,8 @@ def test_create_index(docs):
         create_index(name, doc)
     with open('index.json', "w") as json_file:
         ujson.dump(inverted_index, json_file, indent=4, ensure_ascii=False)
+    with open('vec.json', "w") as json_file:
+        ujson.dump(docs_vec_length, json_file, indent=4, ensure_ascii=False)
     assert False
 
 

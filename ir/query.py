@@ -1,4 +1,4 @@
-from .globals import inverted_index
+from .globals import inverted_index, docs_vec_length
 from .tokenizer import *
 import pdb
 

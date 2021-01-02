@@ -1,12 +1,15 @@
 from string import punctuation
 from typing import List, Tuple
+from math import sqrt
 from .helper import timer, verbal, nonverbal
-from .globals import inverted_index
-
+from .globals import inverted_index, docs_vec_length
+import pdb
 
 def create_index(doc_name: str, text: str):
     global inverted_index
     tokens = tokenize(text)
+    vec_len = doc_vec_len(tokens)
+    docs_vec_length[doc_name] = vec_len
     for token in tokens:
         name = token[0]
         if not inverted_index.get(name):
@@ -18,7 +21,7 @@ def create_index(doc_name: str, text: str):
             index[doc_name] = list(token[1:])
 
 
-def tokenize(text: str) -> List[str]:
+def tokenize(text: str) -> List[Tuple[str, ...]]:
     text = punctuation_remover(text)
     text = persian_number_remover(text)
     text = english_number_remover(text)
@@ -132,6 +135,13 @@ def merge_duplicates(tokens:
             r[-1] += token[1:]
         else:
             r.append(token)
+    return r
+
+
+def doc_vec_len(tokens: List[Tuple[str, ...]]) -> int:
+    r = 0 
+    for token in tokens:
+        r += len((token) - 1) ** 2
     return r
 
 
