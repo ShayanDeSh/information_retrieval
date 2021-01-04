@@ -19,6 +19,8 @@ def test_punctuation_remover():
 
     result = punctuation_remover(string.punctuation)
     assert result == ''
+    r = punctuation_remover('؛')
+    assert r == ''
 
 
 def test_persian_number_remover():
@@ -60,4 +62,12 @@ def test_create_index(docs):
         ujson.dump(docs_vec_length, json_file, indent=4, ensure_ascii=False)
     assert False
 
+
+def test_doc_vec_len():
+    data = [('a', 1, 2, 3), ('b', 1, 2, 4, 4), ('c', 1, 2, 3, 4, 5)]
+    r = doc_vec_len(data)
+    assert r == 50;
+    data = []
+    r = doc_vec_len(data)
+    assert r == 0
 

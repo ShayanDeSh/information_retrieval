@@ -3,6 +3,7 @@ from typing import List, Tuple
 from math import sqrt
 from .helper import timer, verbal, nonverbal
 from .globals import inverted_index, docs_vec_length
+from .tfidf import *
 import pdb
 
 def create_index(doc_name: str, text: str):
@@ -37,7 +38,7 @@ def tokenize(text: str) -> List[Tuple[str, ...]]:
 
 
 def punctuation_remover(text: str) -> str:
-    punc = punctuation + '\u200c' + '\u200b' + '،'
+    punc = punctuation + '\u200c' + '\u200b' + '،' + '؛'
     text = text.translate(str.maketrans('', '', punc))
     return text
 
@@ -141,7 +142,16 @@ def merge_duplicates(tokens:
 def doc_vec_len(tokens: List[Tuple[str, ...]]) -> int:
     r = 0 
     for token in tokens:
-        r += len((token) - 1) ** 2
+        r += (len(token) - 1) ** 2
     return r
+
+
+def champions_list(d, k):
+    result = {}
+    for (key, value) in d:
+        r = tf(d)
+        r = dict(sorted(r.items(), key=lambda item: item[1], reverse=True)[0:k])
+        result[key] = r
+    return result
 
 
